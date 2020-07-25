@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>JS执行顺序 || EventLoop · Jonnzer的博客</title><meta name="description" content="JS执行顺序 || EventLoop - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">JS执行顺序 || EventLoop</h1><div class="tags"><a href="/tags/JS%E5%8E%9F%E7%90%86/" class="tag-title">#JS原理</a></div><div class="post-info">Dec 3, 2019</div><div class="post-content"><h3 id="1-EventLoop"><a href="#1-EventLoop" class="headerlink" title="1.EventLoop"></a>1.EventLoop</h3><p>EventLoop就是那只看不见的手，由它主宰着JS的一切执行。<br>JS的异步代码，遇到时会被放置在一个小圈子里，当把同步代码执行完，就从这圈子里取出来异步代码执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 置底进程</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'from setTimeout'</span>);</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>);</span><br><span class="line"><span class="comment">// 执行顺序：script start =&gt; script end =&gt; from setTimeout</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-微任务-amp-amp-宏任务"><a href="#2-微任务-amp-amp-宏任务" class="headerlink" title="2.微任务 &amp;&amp; 宏任务"></a>2.微任务 &amp;&amp; 宏任务</h3><p>优先级：宏任务 &gt; 微任务 &gt; 异步代码<br>宏任务：script , setTimeout, setInterval, setImmediate, i/0 , UI rendering<br>微任务：process.nextTick, promise, Object.observe, MutationObserver,await</p>
+<ul>
+<li>new Promise(fn) // 也属于微任务，执行优先级高</li>
+<li>且process.nextTick优先级大于promise.then</li>
+<li>await后的async的fn 也会立刻执行 因为这是一个promise返回</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'1'</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// setTimeout1</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'2'</span>);</span><br><span class="line">    process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// process2</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'3'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123; <span class="comment">// promise2</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'4'</span>);</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// then2</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'5'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// process1</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'6'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'7'</span>); <span class="comment">// new Promise立即执行</span></span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// then1</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'8'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// setTimeout2</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'9'</span>);</span><br><span class="line">    process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// process3</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'10'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123; <span class="comment">// promise3</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'11'</span>);</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// then3</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'12'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出顺序 ：</span></span><br><span class="line"><span class="comment">// 第一步：</span></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<p>执行完 1 和 7后，现在看下，身边有这些任务</p>
+<table>
+<thead>
+<tr>
+<th>宏任务Event</th>
+<th align="center">微任务Event Queue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setTimeout1</td>
+<td align="center">process1</td>
+</tr>
+<tr>
+<td>setTimeout2</td>
+<td align="center">then1</td>
+</tr>
+</tbody></table>
+<p>现在第一轮的主线跑完了，轮到第一轮的微任务了，<br>所以，接下来执行的是process1和then1，也就是<br>1，7，6，8， </p>
+<p>第一轮结束，<br>第二轮开始。</p>
+<p>接下来是开启新的一轮eventLoop。开始查询到新的宏任务setTimeout1；</p>
+<table>
+<thead>
+<tr>
+<th>宏任务Event</th>
+<th align="center">微任务Event Queue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setTimeout1</td>
+<td align="center">process2</td>
+</tr>
+<tr>
+<td>setTimeout2</td>
+<td align="center">then2</td>
+</tr>
+</tbody></table>
+<p>1，7，6，8，2，4，3，5</p>
+<p>这下好了，setTimeout1宏任务完成了。<br>接下来，就剩setTimeout2宏任务。</p>
+<table>
+<thead>
+<tr>
+<th>宏任务Event</th>
+<th align="center">微任务Event Queue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td align="center">process3</td>
+</tr>
+<tr>
+<td>setTimeout2</td>
+<td align="center">then3</td>
+</tr>
+</tbody></table>
+<p>1，7，6，8，2，4，3，5，9，11，10，12<br>参考链接：<br><a href="https://juejin.im/post/5aa8a07cf265da238a3022a4" target="_blank" rel="noopener">掘金</a><br><a href="https://juejin.im/post/59e85eebf265da430d571f89" target="_blank" rel="noopener">掘金2</a><br><a href="https://segmentfault.com/a/1190000019494012" target="_blank" rel="noopener">segment</a><br><a href="cxymsg.com/guide/eventLoop.html#前言">blog</a><br><a href="https://segmentfault.com/a/1190000015057278" target="_blank" rel="noopener">promise async await</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2019/12/11/webpack/" class="prev">PREV</a><a href="/2019/12/03/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/" class="next">NEXT</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>

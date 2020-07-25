@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>CSS准备 · Jonnzer的博客</title><meta name="description" content="CSS准备 - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">CSS准备</h1><div class="tags"><a href="/tags/%E9%9D%A2%E8%AF%95/" class="tag-title">#面试</a></div><div class="post-info">Apr 8, 2020</div><div class="post-content"><h3 id="1-介绍下BFC及其应用"><a href="#1-介绍下BFC及其应用" class="headerlink" title="1. 介绍下BFC及其应用"></a>1. 介绍下BFC及其应用</h3><ul>
+<li><p>1.1 BFC是什么:<br>它是css盒模型的css渲染模式。<br>有着盒子对齐，外边距重叠，清除浮动，防止文字环绕，多列最后列宽度自定义（不挤掉）</p>
+</li>
+<li><p>1.2 怎么新建一个BFC:<br>一个新的BFC可以通过给容器添加任何一个触发BFC的CSS样式，如overflow: scroll, overflow: hidden, display: flex, float: left,或者 display: table来创建。<br>display:table可能会产生一些问题<br>overflow:scroll可能会显示不必要的滚动条<br>float:left将会把元素置于容器的左边，其他元素环绕着它<br>overflow:hidden将会剪切掉溢出的元素</p>
+</li>
+</ul>
+<p>参考链接：<br><a href="https://www.w3cplus.com/css/understanding-block-formatting-contexts-in-css.html" target="_blank" rel="noopener">w3cPlus</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context" target="_blank" rel="noopener">MDN</a></p>
+<h3 id="2-A-display-none-B-visibility-hidden-C-opacity-0的区别"><a href="#2-A-display-none-B-visibility-hidden-C-opacity-0的区别" class="headerlink" title="2. A: display:none; B: visibility:hidden; C: opacity: 0的区别"></a>2. A: display:none; B: visibility:hidden; C: opacity: 0的区别</h3><ul>
+<li>展示程度上<br>都不显示</li>
+<li>dom可操作上<br>A不可操作，B不可操作，C可操作</li>
+<li>继承性<br>A和C的父盒子设置了对应的属性A和C，则他们的子代也是不可见，不可操作。B的子代是可以设置显示的</li>
+<li>性能<br>A改变了结构，引起文档回流，性能消耗最大<br>B引起元素重绘，消耗中等<br>C消耗最低</li>
+</ul>
+<p>参考链接：<br><a href="https://www.zhangxinxu.com/wordpress/2012/02/css-overflow-hidden-visibility-hidden-disabled-use/" target="_blank" rel="noopener">张鑫旭BLOG</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/04/09/call&amp;apply&amp;bind/" class="prev">PREV</a><a href="/2020/04/07/%E7%BB%A7%E6%89%BF/" class="next">NEXT</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>

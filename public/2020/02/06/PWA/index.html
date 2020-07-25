@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>PWA · Jonnzer的博客</title><meta name="description" content="PWA - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">PWA</h1><div class="tags"><a href="/tags/%E5%B7%A5%E5%85%B7/" class="tag-title">#工具</a></div><div class="post-info">Feb 6, 2020</div><div class="post-content"><h3 id="1-PWA是什么？（Progressive-Web-App）"><a href="#1-PWA是什么？（Progressive-Web-App）" class="headerlink" title="1.PWA是什么？（Progressive Web App）"></a>1.PWA是什么？（<code>Progressive Web App</code>）</h3><p>书面上意思：渐进式网络应用<br>特点：</p>
+<ul>
+<li>稳定：不好的网络环境下也有好的展现数据能力（<code>service worker</code>）</li>
+<li>过渡自然的动画交互，良好的滚动，响应快</li>
+<li>像原生一般丝滑，可以推送，可安装</li>
+<li>android支持度好，apple支持度差</li>
+</ul>
+<h3 id="1-1-关键技术"><a href="#1-1-关键技术" class="headerlink" title="1.1 关键技术"></a>1.1 关键技术</h3><ul>
+<li>service worker : 一个存在于客户端和服务器之间的代理，可以控制缓存和应对资源请求,预缓存关键资源。所以它对安全的要求也很高，需要在Https环境下运行。</li>
+<li>manifest: （可以理解为一个可设置的入口文件）<br>​              能够将你浏览的网页添加到你的手机屏幕上<br>​              在 Android 上能够全屏启动，不显示地址栏 （ 由于 Iphone 手机的浏览器是 Safari ，所以不支持哦）<br>​              控制屏幕 横屏 / 竖屏 展示<br>​              定义启动画面<br>​              可以设置你的应用启动是从主屏幕启动还是从 URL 启动<br>​              可以设置你添加屏幕上的应用程序图标、名字、图标大小</li>
+</ul>
+<h3 id="2-可以用来干嘛呢"><a href="#2-可以用来干嘛呢" class="headerlink" title="2.可以用来干嘛呢"></a>2.可以用来干嘛呢</h3><ul>
+<li>推送，这点需要安卓去验证，目前PWA的支持度仅是安卓比较好。ios的google浏览器也不支持</li>
+<li>离线缓存。 可以设置缓存的资源，即使离线也可以访问</li>
+</ul>
+<h3 id="3-DEMO"><a href="#3-DEMO" class="headerlink" title="3. DEMO"></a>3. DEMO</h3><p>demo已放在mineScript文件夹下<br>github地址是：<a href="https://github.com/jonnzer/good_snippet/tree/master/PWA" target="_blank" rel="noopener">demo</a></p>
+<ul>
+<li>代码结构：</li>
+</ul>
+<ul>
+<li>sw.js: 引入serviceWorker.js，定义缓存资源，部署整个sw的生命周期代码</li>
+<li>manifest.json: 一个定义好背景颜色，展示图片，icon，的入口文件。</li>
+<li>建议部署在https环境下的cdn。</li>
+</ul>
+<p>参考链接：<br><a href="https://developers.google.com/web/progressive-web-apps/" target="_blank" rel="noopener">官网</a><br><a href="https://juejin.im/post/5ae2f82f6fb9a07acd4d761e" target="_blank" rel="noopener">掘金1</a><br><a href="https://www.villainhr.com/page/2017/01/08/Service%20Worker%20%E5%85%A8%E9%9D%A2%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">serviceWorker的调试</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/03/13/%E6%B5%8F%E8%A7%88%E5%99%A8-%E8%BE%93%E5%85%A5url%E6%93%8D%E4%BD%9C%E7%AF%87/" class="prev">PREV</a><a href="/2020/01/04/JS%E6%A8%A1%E5%9D%97%E5%8C%96/" class="next">NEXT</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>

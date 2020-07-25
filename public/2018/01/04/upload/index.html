@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>upload之初探 · Jonnzer的博客</title><meta name="description" content="upload之初探 - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">upload之初探</h1><div class="tags"><a href="/tags/upload/" class="tag-title">#upload</a></div><div class="post-info">Jan 4, 2018</div><div class="post-content"><h4 id="来由"><a href="#来由" class="headerlink" title="来由"></a>来由</h4><blockquote>
+<p>产品有做能多选的上传这个功能，开始倒腾。事实也踩了不少坑。现就开始梳理今天的思路。</p>
+</blockquote>
+<h4 id="框架选取"><a href="#框架选取" class="headerlink" title="框架选取"></a>框架选取</h4><ul>
+<li><p>微信上传接口:<br>先上图 : 我们可以看到的是，它的接口 chooseImage 确是有这番作用。直接把朋友圈发照片的流程给调出来。可以预览，可以原图，很全面了。然而，它需要传到微信服务器走一遭，这是最让人难受的</p>
+<blockquote>
+<p>弃用原因：本身我项目的图片存储是放在阿里云oss里，如今还得再经过微信服务器上传下载，就把这事搞麻烦了…</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2018/01/04/upload/1.png" style="width:50%;height:60%;"><img src="/2018/01/04/upload/2.png" style="width:50%;height:60%;"></p>
+<ul>
+<li><p>eleme-UI<br>还是先上图：它也是极好的，从UI美观角度看，或是它的功能性，都很接近理想了。可惜，它的上传只有一次，就是它的请求服务器Url只有一个，而且是在vue的html里渲染，这就更不好改了</p>
+<blockquote>
+<p> 弃用原因: 还是因为oss里的判断，有引进了两次请求，第一次是请求 下次请求要用上的地址和id 第二次则是真正和oss请求上传图。</p>
+<img src="/2018/01/04/upload/3.png" style="width:50%;height:60%;">
+</blockquote>
+</li>
+<li><p>plupload<br>还在研究中…是后台同事推荐的一个插件，据说oss就是官方支持这个，大喜之余就看看它文档。</p>
+<h4 id="嗯。加油，明天继续倒腾！"><a href="#嗯。加油，明天继续倒腾！" class="headerlink" title="嗯。加油，明天继续倒腾！^_^"></a>嗯。加油，明天继续倒腾！^_^</h4></li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/05/02/sql/" class="prev">PREV</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>

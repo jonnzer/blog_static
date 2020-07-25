@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>H5-insertAdjacentElement · Jonnzer的博客</title><meta name="description" content="H5-insertAdjacentElement - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">H5-insertAdjacentElement</h1><div class="tags"><a href="/tags/H5/" class="tag-title">#H5</a></div><div class="post-info">Mar 11, 2019</div><div class="post-content"><h6 id="insertAdjacentElement作用是？"><a href="#insertAdjacentElement作用是？" class="headerlink" title="insertAdjacentElement作用是？"></a>insertAdjacentElement作用是？</h6><p>该方法将一个给定的元素节点<code>插入到</code><em>相对于被调用的元素</em>的给定的<code>一个位置</code>。</p>
+<h6 id="如何用呢？"><a href="#如何用呢？" class="headerlink" title="如何用呢？"></a>如何用呢？</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element1.insertAdjacentElement(position, element2);</span><br></pre></td></tr></table></figure>
+<p>参数positon:</p>
+<ul>
+<li><code>beforebegin</code>: 在该元素本身的前面.</li>
+<li><code>afterbegin</code>:只在该元素当中, 在该元素第一个子孩子前面.</li>
+<li><code>beforeend</code>:只在该元素当中, 在该元素最后一个子孩子后面.</li>
+<li><code>afterend</code>: 在该元素本身的后面.</li>
+</ul>
+<p>element1：不动的元素<br>element2：被插入的元素</p>
+<h6 id="具体例子"><a href="#具体例子" class="headerlink" title="具体例子"></a>具体例子</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fileWrap = <span class="built_in">document</span>.querySelector(<span class="string">`#<span class="subst">$&#123;<span class="keyword">this</span>.fileWrapId&#125;</span>`</span>);</span><br><span class="line">fileWrap.insertAdjacentElement(<span class="string">'afterbegin'</span>, elem); <span class="comment">// elem为插入的元素</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h6><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentElement" target="_blank" rel="noopener">mdn</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2019/04/06/%E8%AF%B7%E5%9B%9E%E7%AD%941988/" class="prev">PREV</a><a href="/2019/03/02/%E5%A4%8D%E5%88%B6%E5%86%85%E5%AE%B9/" class="next">NEXT</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>浏览器异步（二） · Jonnzer的博客</title><meta name="description" content="浏览器异步（二） - Jonnzer"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/gandalfr.css"><link rel="search" type="application/opensearchdescription+xml" href="https://jonnzer.github.io/atom.xml" title="Jonnzer的博客"><script src="/js/Valine.min.js"></script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Jonnzer的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/jonnzer/" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">浏览器异步（二）</h1><div class="tags"><a href="/tags/JS/" class="tag-title">#JS</a></div><div class="post-info">Jul 18, 2020</div><div class="post-content"><blockquote>
+<p>转载自瓶子君的blog <a href="https://github.com/sisterAn/blog/issues/12" target="_blank" rel="noopener">链接</a></p>
+</blockquote>
+<h3 id="step1：回调函数callback"><a href="#step1：回调函数callback" class="headerlink" title="step1：回调函数callback"></a>step1：回调函数callback</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">asyncFunction(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// todo</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这种回调函数，大家是最熟悉的。一般是需要在某个耗时操作之后执行某个回调函数。</p>
+<p>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Time out'</span>)</span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其中，我们称<code>setTimeout</code>为发起函数，<code>fn</code>为回调函数。都是在主线程上调用的，其中发起函数用来发动异步过程，回调函数用来处理结果。在执行<code>setTimeout</code>1s后，执行function函数。</p>
+<p>下面，我们再看一种情况。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url:<span class="string">'XXX1'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        $.ajax(&#123;</span><br><span class="line">            url:<span class="string">'XXX2'</span>,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">                $.ajax(&#123;</span><br><span class="line">                    url: <span class="string">'XXX3'</span>,</span><br><span class="line">                    success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">                        <span class="comment">// todo</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    fail: <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(err)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;,</span><br><span class="line">            fail: <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(err)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;) </span><br><span class="line">    &#125;,</span><br><span class="line">    fail: <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在上例中，我们看到这段回调函数，不断的在回调，这只是三层回调，在实际应用中，我们遇到的需求会更复杂，回调也许更多，调试起来也就更麻烦，代码也更不美观，这就是我们要引入的第一个问题：回调地狱。</p>
+<p><strong>问题1: 回调地狱</strong></p>
+<p>回调地狱是JS里一个约定俗成的名称，一般情况下，一个业务依赖于上层业务，上层业务又依赖于更上一层的业务，以此类推，如果我们使用回调函数来处理异步的话，就会出现回调地狱。</p>
+<p>主要是因为：大脑对业务的逻辑处理是线性的、阻塞的、单线程的，但是回调表达异步的方式是非线形的、非顺序的，这使得正确推导这类代码的难度很大，很容易出bug。</p>
+<p>再例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A</span></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    ...</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">...</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// C</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// B</span></span><br></pre></td></tr></table></figure>
+
+<p>A和B发生于现在，在JavaScript主程序的直接控制之下，而C会延迟到将来发生，并且是在第三方的控制下，在本例中就是函数$.ajax(…)。从根本上来说，这种控制的转移通常不会给程序带来很多问题。</p>
+<p>但是，请不要被这个小概率迷惑而认为这种控制切换不是什么大问题。实际上，这是回调驱动设计最严重（也是最微妙）的问题。它以这样一个思路为中心：有时候ajax(…)，也就是你交付回调函数的第三方不是你编写的代码，也不在你的直接控制之下，它是某个第三方提供的工具。</p>
+<p>这种情况称为<strong>控制反转</strong>，也就是把自己程序一部分的执行控制交给某个第三方，在你的代码和第三方工具直接有一份并没有明确表达的契约。</p>
+<p>既然是无法控制的第三方在执行你的回调函数，那么就有可能存在以下问题，当然通常情况下是不会发生的：</p>
+<ol>
+<li>调用回调过早</li>
+<li>调用回调过晚</li>
+<li>调用回调次数太多或者太少</li>
+<li>未能把所需的参数成功传给你的回调函数</li>
+<li>吞掉可能出现的错误或异常</li>
+<li>……</li>
+</ol>
+<p>这种控制反转会导致信任链的完全断裂，如果你没有采取行动来解决这些控制反转导致的信任问题，那么你的代码已经有了隐藏的Bug，尽管我们大多数人都没有这样做。</p>
+<p>这里，我们引出了回调函数处理异步的第二个问题：<strong>控制反转</strong>。</p>
+<h3 id="step2：控制反转"><a href="#step2：控制反转" class="headerlink" title="step2：控制反转"></a><strong>step2：控制反转</strong></h3><p>综上，回调函数处理异步流程存在2个问题：</p>
+<p><strong>1. 缺乏顺序性： 回调地狱导致的调试困难，和大脑的思维方式不符</strong></p>
+<p><strong>2. 缺乏可信任性： 控制反转导致的一系列信任问题</strong></p>
+<p>那么如何来解决这两个问题，先驱者们开始了探索之路……</p>
+<hr>
+<p>参考：<br><a href="https://github.com/sisterAn/blog/issues/12" target="_blank" rel="noopener">瓶子君 blog</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/07/18/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%82%E6%AD%A5%EF%BC%88%E4%B8%89%EF%BC%89%E4%B9%8BPromise%E5%AE%9E%E7%8E%B0/" class="prev">PREV</a><a href="/2020/07/17/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%82%E6%AD%A5%EF%BC%88%E4%B8%80%EF%BC%89/" class="next">NEXT</a></div><div id="vcomments"></div><!--script(src="//unpkg.com/valine/dist/Valine.min.js")--><script>new Valine({ // 里面的参数配置具体参考Valine官网
+    el: '#vcomments',
+    appId: `Hv8Cfy93FCgDUy3fP2Av9Ies-gzGzoHsz`,
+    appKey: `4fAniISvXobBOUUx5SEE89dV`,
+    placeholder: '快来评论吧(#^.^#)',
+    avatar: 'wavatar'
+});</script><div class="copyright"><p>© 2017 - 2020 <a href="https://jonnzer.github.io">Jonnzer</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/MikeCoder/hexo-theme-gandalfr" target="_blank">hexo-theme-gandalfr</a>.</p></div></footer></div><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script src="/js/jquery.js"></script></body></html>
