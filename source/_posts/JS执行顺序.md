@@ -17,8 +17,8 @@ console.log('script end');
 ```
 
 ### 2.微任务 && 宏任务
-优先级：宏任务 > 微任务 > 异步代码
-宏任务：script , setTimeout, setInterval, setImmediate, i/0 , UI rendering
+优先级：同步代码 > 微任务 > 宏任务 > 异步代码
+宏任务：script , setTimeout, setInterval, setImmediate, i/0 , UI rendering ,requestAnimationFrame
 微任务：process.nextTick, promise, Object.observe, MutationObserver,await
 
 + new Promise(fn) // 也属于微任务，执行优先级高
@@ -100,9 +100,45 @@ setTimeout(function() { // setTimeout2
 | setTimeout2   |  then3        |  
 
 1，7，6，8，2，4，3，5，9，11，10，12
+
+
+### 3. Vue的nextTick
+
+> 异步更新内部是最重要的就是nextTick方法，它负责将异步任务加入队列和执行异步任务。
+VUE  也将它暴露出来提供给用户使用。在数据修改完成后，立即获取相关DOM还没那么快更新，使用nextTick便可以解决这一问题。
+
+> watcher:每个监视者都有他们自己的id，当没有记录到对应的监视者.
+即第一次进入逻辑，否则是重复的监视者，则不会进入。这一步就是实现监视者去重的点。
+
+> new Promise > MutationObserver > setImmediate > setTimeout
+
+> 异步队列更新dom和数据，执行callback回调
+
+```js
+<input v-if="show" type="text" ref="myInput">
+
+// js
+
+data() {
+    show: false,
+},
+mounted() {
+    this.show = true
+    
+    this.$refs.myInput.focus() // error
+
+    this.$nextTick(function() { // 获取dom的更新，成功执行
+        this.$refs.myInput.focus()
+    })
+},
+
+```
+
+
 参考链接：
 [掘金](https://juejin.im/post/5aa8a07cf265da238a3022a4)
 [掘金2](https://juejin.im/post/59e85eebf265da430d571f89)
 [segment](https://segmentfault.com/a/1190000019494012)
 [blog](cxymsg.com/guide/eventLoop.html#前言)
 [promise async await](https://segmentfault.com/a/1190000015057278)
+[vue nextTick原理](https://github.com/answershuto/learnVue/blob/master/docs/Vue.js%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0DOM%E7%AD%96%E7%95%A5%E5%8F%8AnextTick.MarkDown#nexttick)
