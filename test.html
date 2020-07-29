@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-    
+
     </style>
 </head>
+
 <body>
+    <ul id="list">
+        <li>
+            <div>div</div>
+        </li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul>
+    <script>
+        var list = document.querySelector('#list')
+        list.addEventListener('click', function (e) {
+            // elem.closest(selector) 方法返回与 selector 匹配的最近的祖先。'
+            // 在我们的例子中，我们从源元素开始向上寻找 <li>。
+            // 限定不超出ul#list的范围
+            let li = e.target.closest('li');
+            if (!li) return;
+            if(!list.contains(li)) return;
+            console.log(li)
+        })
+    </script>
 </body>
+
 </html>
