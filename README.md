@@ -1,2 +1,2 @@
 # Hexo_new_blog
-博客静态存放
+前端博客，详见issue哦
